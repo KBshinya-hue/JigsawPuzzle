@@ -106,6 +106,67 @@ public class MainActivity extends AppCompatActivity {
     }//数据初始化
 
     public void onClick(View view) {
+        int id = view.getId();
+//        九个按钮执行的点击事件的逻辑应该是相同的，如果有空格在周围，可以改变图片显示的位置，否则点击事件不响应
+        switch (id) {
+            case R.id.pt_01:
+                move(R.id.pt_01,0);
+                break;
+            case R.id.pt_02:
+                move(R.id.pt_02,1);
+                break;
+            case R.id.pt_03:
+                move(R.id.pt_03,2);
+                break;
+            case R.id.pt_11:
+                move(R.id.pt_11,3);
+                break;
+            case R.id.pt_12:
+                move(R.id.pt_12,4);
+                break;
+            case R.id.pt_13:
+                move(R.id.pt_13,5);
+                break;
+            case R.id.pt_21:
+                move(R.id.pt_21,6);
+                break;
+            case R.id.pt_22:
+                move(R.id.pt_22,7);
+                break;
+            case R.id.pt_23:
+                move(R.id.pt_23,8);
+                break;
+        }
+    }
+    /*表示移动指定位置的按钮的函数，将图片和空白区域进行交换*/
+    private void move(int imagebuttonId, int site) {
+//            判断选中的图片在第几行
+        int sitex = site / imageX;
+        int sitey = site % imageY; //第几列
+//        获取空白区域的坐标
+        int blankx = blankSwap / imageX;
+        int blanky = blankSwap % imageY;
+//        可以移动的条件有两个
+//        1.在同一行，列数相减，绝对值为1，可移动   2.在同一列，行数相减，绝对值为1，可以移动
+        int x = Math.abs(sitex-blankx);
+        int y = Math.abs(sitey-blanky);
+        if ((x==0&&y==1)||(y==0&&x==1)){
+//            通过id，查找到这个可以移动的按钮
+            ImageButton clickButton = findViewById(imagebuttonId);
+            clickButton.setVisibility(View.INVISIBLE);
+//            查找到空白区域的按钮
+            ImageButton blankButton = findViewById(blankImgid);
+//            将空白区域的按钮设置图片
+            blankButton.setImageResource(image[imageIndex[site]]);
+//            移动之前是不可见的，移动之后，将控件设置为可见
+            blankButton.setVisibility(View.VISIBLE);
+//            将改变角标的过程记录到存储图片位置数组当中
+            swap(site,blankSwap);
+//            新的空白区域位置更新等于传入的点击按钮的位置
+            blankSwap = site;
+            blankImgid = imagebuttonId;
+        }
+//      判断本次移动完成后，是否完成了拼图游戏
 
     }
 

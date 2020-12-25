@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">JigsawPuzzle</string>
-    <string name="time">Time：0s</string>
+    <string name="time">Time：0s </string>
     <string name="restart">reStart</string>
 </resources>

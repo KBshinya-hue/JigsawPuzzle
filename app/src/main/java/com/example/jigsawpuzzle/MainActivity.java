@@ -167,13 +167,102 @@ public class MainActivity extends AppCompatActivity {
             blankImgid = imagebuttonId;
         }
 //      判断本次移动完成后，是否完成了拼图游戏
-
+        judgeGameOver();
     }
 
 
 
-    //重新开始的点击事件，打乱拼图并且时间归零
-    public void reStart(View view) {
+    /* 判断拼图是否成功*/
+    private void judgeGameOver() {
+        boolean loop = true;   //定义标志位
+        for (int i = 0; i < imageIndex.length; i++) {
+            if (imageIndex[i]!=i) {
+                loop = false;
+                break;
+            }
+        }
+        if (loop) {
+//            拼图成功了
+//            停止计时
+            handler.removeMessages(1);
+//            拼图成功后，禁止玩家继续移动按钮
+            pt01.setClickable(false);
+            pt02.setClickable(false);
+            pt03.setClickable(false);
+            pt11.setClickable(false);
+            pt12.setClickable(false);
+            pt13.setClickable(false);
+            pt21.setClickable(false);
+            pt22.setClickable(false);
+            pt23.setClickable(false);
+            pt23.setImageResource(image[8]);
+            pt23.setVisibility(View.VISIBLE);
+//            弹出提示用户成功的对话框
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("恭喜，拼图成功！您用的时间为"+time+"秒")
+                    .setPositiveButton("确认",null);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+    }
+
+    /* 重新开始按钮的点击事件*/
+    public void restart(View view) {
+//        将状态还原
+        restore();
+//       将拼图重新打乱
+        disruptRandom();
+        handler.removeMessages(1);
+//        将时间重新归0，并且重新开始计时
+        timer = 0;
+        time.setText("时间 : "+time+" 秒");
+        handler.sendEmptyMessageDelayed(1,1000);
+    }
+
+    private void restore() {
+        //      拼图游戏重新开始，允许完成移动碎片按钮
+        pt01.setClickable(true);
+        pt02.setClickable(true);
+        pt03.setClickable(true);
+        pt11.setClickable(true);
+        pt12.setClickable(true);
+        pt13.setClickable(true);
+        pt21.setClickable(true);
+        pt22.setClickable(true);
+        pt23.setClickable(true);
+//        还原被点击的图片按钮变成初始化的模样
+        ImageButton clickBtn = findViewById(blankImgid);
+        clickBtn.setVisibility(View.VISIBLE);
+//        默认隐藏第九章图片
+        ImageButton blankBtn = findViewById(R.id.pt_23);
+        blankBtn.setVisibility(View.INVISIBLE);
+        blankImgid = R.id.pt_23;   //初始化空白区域的按钮id
+        blankSwap = imgCount - 1;
+    }
+    public void suspend(View view){
+        handler.removeMessages(1);
+        pt01.setClickable(false);
+        pt02.setClickable(false);
+        pt03.setClickable(false);
+        pt11.setClickable(false);
+        pt12.setClickable(false);
+        pt13.setClickable(false);
+        pt21.setClickable(false);
+        pt22.setClickable(false);
+        pt23.setClickable(false);
+    }
+
+    public void Continue(View view) {
+        handler.sendEmptyMessageDelayed(1,1000);
+        pt01.setClickable(true);
+        pt02.setClickable(true);
+        pt03.setClickable(true);
+        pt11.setClickable(true);
+        pt12.setClickable(true);
+        pt13.setClickable(true);
+        pt21.setClickable(true);
+        pt22.setClickable(true);
+        pt23.setClickable(true);
     }
 }
 
